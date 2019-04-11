@@ -247,6 +247,7 @@
 					"$(SRCROOT)/../../react-native/React/**",
 					"${SYMROOT}",
 					"$(SRCROOT)/../../../ios/Pods/Headers/Public/**",
+					"$(SRCROOT)/../../../../../ios/Pods/Headers/Public/**",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -261,6 +262,7 @@
 					"$(SRCROOT)/../../react-native/React/**",
 					"${SYMROOT}",
 					"$(SRCROOT)/../../../ios/Pods/Headers/Public/**",
+					"$(SRCROOT)/../../../../../ios/Pods/Headers/Public/**",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
