@@ -65,11 +65,10 @@ EOF
 # find that above node_modules/react-native-config/ios/ReactNativeConfig/ from "Pods/"
 normal_project_path = File.join(Dir.pwd, "../../node_modules/react-native-config/ios/ReactNativeConfig")
 path = File.join(normal_project_path, "GeneratedDotEnv.m")
-some_project_path = File.join(Dir.pwd, "../life/node_modules/react-native-config/ios/ReactNativeConfig")
 
 if File.exists?(path)
     puts("*****create file to :*****")
-    puts("#{some_project_path}")
+    puts("#{path}")
     puts("**************************")
     File.open(path, "w") { |f| f.puts template }
 else
