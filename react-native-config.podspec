@@ -11,12 +11,17 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/luggit/react-native-config"
 
   s.license      = "MIT"
-  s.platform     = :ios, "7.0"
+  s.ios.deployment_target = "7.0"
+  s.tvos.deployment_target = "9.0"
 
   s.source       = { :git => "https://github.com/luggit/react-native-config.git", :tag => "#{s.version}" }
+  s.preserve_path = "ios/**/*.{ruby}"
 
-  s.source_files  = "ios/**/*.{h,m}"
+  s.source_files  = "ios/**/*.{h,m,ruby}"
   s.requires_arc = true
+  
+  s.script_phase = { :name => "BuildDotenvConfig",
+    :script => "${PODS_TARGET_SRCROOT}/ios/ReactNativeConfig/BuildDotenvConfig.ruby", :execution_position => :before_compile }
 
   s.dependency "React"
 end

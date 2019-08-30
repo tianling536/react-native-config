@@ -23,13 +23,13 @@ dotenv = begin
   dotenv_pattern = /^(?:export\s+|)(?<key>[[:alnum:]_]+)=((?<quote>["'])?(?<val>.*?[^\\])\k<quote>?|)$/
 
   # find that above node_modules/react-native-config/ios/
-  path = File.join(Dir.pwd, "../../../#{file}")
+  path = File.join(Dir.pwd, "../../#{file}")
   if File.exists?(path)
     raw = File.read(path)
   elsif File.exists?(file)
-    raw = File.read(file)    
+    raw = File.read(file)
   else
-    defaultEnvPath = File.join(Dir.pwd, "../../../#{defaultEnvFile}")
+    defaultEnvPath = File.join(Dir.pwd, "../../#{defaultEnvFile}")
     if !File.exists?(defaultEnvPath)
       # try as absolute path
       defaultEnvPath = defaultEnvFile
@@ -56,14 +56,32 @@ rescue Errno::ENOENT
 end
 
 # create obj file that sets DOT_ENV as a NSDictionary
-dotenv_objc = dotenv.map { |k, v| %Q(@"#{k}":@"#{v}") }.join(",")
+dotenv_objc = dotenv.map { |k, v| %Q(@"#{k}":@"#{v.chomp}") }.join(",")
 template = <<EOF
   #define DOT_ENV @{ #{dotenv_objc} };
 EOF
 
 # write it so that ReactNativeConfig.m can return it
-path = File.join(ENV["SYMROOT"], "GeneratedDotEnv.m")
-File.open(path, "w") { |f| f.puts template }
+# find that above node_modules/react-native-config/ios/ReactNativeConfig/ from "Pods/"
+normal_project_path = File.join(Dir.pwd, "../../node_modules/react-native-config/ios/ReactNativeConfig")
+path = File.join(normal_project_path, "GeneratedDotEnv.m")
+some_project_path = File.join(Dir.pwd, "../life/node_modules/react-native-config/ios/ReactNativeConfig")
+
+if File.exists?(path)
+    puts("*****create file to :*****")
+    puts("#{some_project_path}")
+    puts("**************************")
+    File.open(path, "w") { |f| f.puts template }
+else
+    some_project_path = File.join(Dir.pwd, "../life/node_modules/react-native-config/ios/ReactNativeConfig")
+    some_path = File.join(some_project_path, "GeneratedDotEnv.m")
+    if File.exists?(some_path)
+        puts("*****create file to :*****")
+        puts("#{path}")
+        puts("**************************")
+        File.open(some_path, "w") { |f| f.puts template }
+    end
+end
 
 # create header file with defines for the Info.plist preprocessor
 info_plist_defines_objc = dotenv.map { |k, v| %Q(#define __RN_CONFIG_#{k}  #{v}) }.join("\n")
