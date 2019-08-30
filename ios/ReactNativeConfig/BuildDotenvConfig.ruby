@@ -76,7 +76,7 @@ else
     some_path = File.join(some_project_path, "GeneratedDotEnv.m")
     if File.exists?(some_path)
         puts("*****create file to :*****")
-        puts("#{path}")
+        puts("#{some_path}")
         puts("**************************")
         File.open(some_path, "w") { |f| f.puts template }
     end
